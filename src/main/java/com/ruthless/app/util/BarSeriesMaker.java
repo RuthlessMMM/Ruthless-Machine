@@ -30,7 +30,7 @@ public class BarSeriesMaker {
         }
 
         // Remove last tick from candlesticks if needed.
-        // candlesticks.remove(candlesticks.size() - 1);
+        candlesticks.remove(candlesticks.size() - 1);
         // addBar from binance to ta4j
         for (Candlestick tick : candlesticks) {
             Instant i = Instant.ofEpochSecond(tick.getCloseTime() / 1000);

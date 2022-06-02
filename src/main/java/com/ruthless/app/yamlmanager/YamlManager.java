@@ -7,10 +7,12 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.binance.api.client.domain.market.CandlestickInterval;
 import com.ruthless.app.strategy.Strategy86Config;
+import com.ruthless.app.util.TradeRecord;
 
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
@@ -34,7 +36,8 @@ public class YamlManager {
         }
     }
 
-    public void update(String chatId, CandlestickInterval interval, String symbol, Strategy86Config config) {
+    public void updateSubscription(String chatId, CandlestickInterval interval, String symbol,
+            Strategy86Config config) {
         UserData yamlData = this.read(chatId);
         if (yamlData != null) {
             ArrayList<SubscribeData> subData = yamlData.subscriptions;
@@ -52,11 +55,29 @@ public class YamlManager {
         }
     }
 
+    // positionid : symbol+interval ex: BTCUSDTFIFTEEN_MINUTES
+    public void updatePositionsHistory(String chatId, String positionId, ArrayList<TradeRecord> positionsHistory) {
+        UserData yamlData = this.read(chatId);
+        if (yamlData != null && yamlData.allPositionsHistory != null) {
+            ArrayList<TradeRecord> itemsList = positionsHistory;
+            yamlData.allPositionsHistory.put(positionId, itemsList);
+            try {
+                PrintWriter writer = new PrintWriter(new File(path + chatId + ".yml"));
+                Yaml yaml = new Yaml();
+                yaml.dump(yamlData, writer);
+            } catch (Exception e) {
+                System.err.println(e);
+            }
+        } else {
+            System.out.println("ERROR: Could not read " + chatId);
+        }
+    }
+
     public void addUser(String chatId, String username) {
         try {
             ArrayList<SubscribeData> subData = new ArrayList<SubscribeData>();
-            UserData data = new UserData(username, username, subData);
-            data.subscriptions = subData;
+            Map<String, ArrayList<TradeRecord>> allPositionsHistory = new HashMap<>();
+            UserData data = new UserData(username, username, subData, allPositionsHistory);
             PrintWriter writer = new PrintWriter(new File(path + chatId + ".yml"));
             Yaml yaml = new Yaml();
             yaml.dump(data, writer);
@@ -69,7 +90,7 @@ public class YamlManager {
         YamlManager m = new YamlManager();
         m.addUser("ff", "ncc");
         UserData u = m.read("ff");
-        m.update("ff", CandlestickInterval.DAILY, "BTCUSDT", new Strategy86Config());
+        m.updateSubscription("ff", CandlestickInterval.DAILY, "BTCUSDT", new Strategy86Config());
 
     }
 }

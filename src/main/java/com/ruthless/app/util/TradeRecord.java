@@ -11,6 +11,9 @@ public class TradeRecord {
     private double earningsYield;
     private boolean isClose = false;
 
+    public TradeRecord() {
+    }
+
     public TradeRecord(double entryPrice, String entryTime, String type) {
         this.entryPrice = entryPrice;
         this.entryTime = entryTime;
