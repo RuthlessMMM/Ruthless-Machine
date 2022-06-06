@@ -36,7 +36,7 @@ public class YamlManager {
         }
     }
 
-    public void updateSubscription(String chatId, CandlestickInterval interval, String symbol,
+    public void addSubscription(String chatId, CandlestickInterval interval, String symbol,
             Strategy86Config config) {
         UserData yamlData = this.read(chatId);
         if (yamlData != null) {
@@ -44,11 +44,31 @@ public class YamlManager {
             subData.add(new SubscribeData(symbol, interval, config));
             yamlData.subscriptions = subData;
             try {
-                PrintWriter writer = new PrintWriter(new File(path + chatId + ".yml"));
-                Yaml yaml = new Yaml();
-                yaml.dump(yamlData, writer);
+                dump(chatId, yamlData);
             } catch (Exception e) {
                 System.err.println(e);
+            }
+        } else {
+            System.out.println("ERROR: Could not read " + chatId);
+        }
+    }
+
+    public void updateSubscription(String chatId, CandlestickInterval interval, String symbol,
+            Strategy86Config config) {
+        UserData yamlData = this.read(chatId);
+        if (yamlData != null) {
+            for (int i = 0; i < yamlData.subscriptions.size(); i++) {
+                if ((symbol + String.valueOf(interval))
+                        .equals(yamlData.subscriptions.get(i).symbol + String.valueOf(
+                                yamlData.subscriptions.get(i).interval))) {
+                    try {
+                        yamlData.subscriptions.get(i).config = config;
+                        dump(chatId, yamlData);
+                    } catch (Exception e) {
+                        System.err.println(e);
+                    }
+                    break;
+                }
             }
         } else {
             System.out.println("ERROR: Could not read " + chatId);
@@ -62,9 +82,7 @@ public class YamlManager {
             ArrayList<TradeRecord> itemsList = positionsHistory;
             yamlData.allPositionsHistory.put(positionId, itemsList);
             try {
-                PrintWriter writer = new PrintWriter(new File(path + chatId + ".yml"));
-                Yaml yaml = new Yaml();
-                yaml.dump(yamlData, writer);
+                dump(chatId, yamlData);
             } catch (Exception e) {
                 System.err.println(e);
             }
@@ -77,13 +95,17 @@ public class YamlManager {
         try {
             ArrayList<SubscribeData> subData = new ArrayList<SubscribeData>();
             Map<String, ArrayList<TradeRecord>> allPositionsHistory = new HashMap<>();
-            UserData data = new UserData(username, username, subData, allPositionsHistory);
-            PrintWriter writer = new PrintWriter(new File(path + chatId + ".yml"));
-            Yaml yaml = new Yaml();
-            yaml.dump(data, writer);
+            UserData data = new UserData(username, chatId, subData, allPositionsHistory);
+            dump(chatId, data);
         } catch (Exception e) {
             System.err.println(e);
         }
+    }
+
+    public void dump(String chatId, UserData data) throws Exception {
+        PrintWriter writer = new PrintWriter(new File(path + chatId + ".yml"));
+        Yaml yaml = new Yaml();
+        yaml.dump(data, writer);
     }
 
     public static void main(String[] args) {
