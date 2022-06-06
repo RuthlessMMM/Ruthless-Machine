@@ -10,7 +10,7 @@
 + 在 `src/main/java/com/ruthless/app/property` 資料夾下新增 `telegramConfig.properties` 文件
 + 文件內容應當長這樣：
     ```properties
-    telegarm.token=5372662822:[你的 Telegram Token 沒有中括號]
+    telegarm.token=[你的 Telegram Token 沒有中括號]
     ```
 + 大功告成！
 

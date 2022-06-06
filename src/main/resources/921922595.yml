@@ -1,20 +1,11 @@
 !!com.ruthless.app.yamlmanager.UserData
 allPositionsHistory:
-  BTCUSDTFIFTEEN_MINUTES:
-  - !!com.ruthless.app.util.TradeRecord {earningsYield: 0.0, entryPrice: 31305.02,
-    entryTime: '2022/06/07 01:44', exitPrice: 31305.02, exitTime: '2022/06/07 01:44',
-    stopLossPrice: 31234.148672149084, takeProfitPrice: 31616.85384254404, type: long}
-  - !!com.ruthless.app.util.TradeRecord {earningsYield: 0.0, entryPrice: 31305.02,
-    entryTime: '2022/06/07 01:44', exitPrice: 31305.02, exitTime: '2022/06/07 01:44',
-    stopLossPrice: 31234.148672149084, takeProfitPrice: 31616.85384254404, type: long}
-  - !!com.ruthless.app.util.TradeRecord {earningsYield: 0.0, entryPrice: 31305.02,
-    entryTime: '2022/06/07 01:44', exitPrice: 0.0, exitTime: null, stopLossPrice: 0.0,
-    takeProfitPrice: 0.0, type: long}
+  ETHUSDTFIFTEEN_MINUTES: []
 chatId: '921922595'
 subscriptions:
 - config: {ATRBarCount: 25, ATRStopLossPercent: 50, ATRTakeProfitPercent: 220, RSIBarCount: 10,
-    RSILongTakeProfit: 10, RSIShortTakeProfit: 90, RSIoverbought: 10, RSIoversold: 90,
+    RSILongTakeProfit: 10, RSIShortTakeProfit: 90, RSIoverbought: 90, RSIoversold: 10,
     SMABarCount: 200}
   interval: FIFTEEN_MINUTES
-  symbol: BTCUSDT
+  symbol: ETHUSDT
 username: ncchen

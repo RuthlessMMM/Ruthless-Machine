@@ -162,7 +162,6 @@ public class Bot {
                             request = new SendMessage(chatId, "找不到這個排程喔！請在輸入一次：");
                         }
                     } else if (BotRecord.configrationState == 3) {
-                        System.out.println("2222 ===> 3");
                         request = new SendMessage(chatId,
                                 updateTechnicalIndicator(data, String.valueOf(chatId),
                                         userInput, "SMABarCount",
